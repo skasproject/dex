@@ -3,12 +3,22 @@ OS = $(shell uname | tr A-Z a-z)
 export PATH := $(abspath bin/protoc/bin/):$(abspath bin/):${PATH}
 
 PROJ=dex
-ORG_PATH=github.com/dexidp
-REPO_PATH=$(ORG_PATH)/$(PROJ)
+ORG_PATH=ghcr.io/skasproject/dex
+#REPO_PATH=$(ORG_PATH)/$(PROJ)
+REPO_PATH=.
+
+# You can switch between simple (faster) docker build or multiplatform one.
+# For multiplatform build on a fresh system, do 'make docker-set-multiplatform-builder'
+#DOCKER_BUILD := docker buildx build --builder multiplatform --cache-to type=local,dest=$(BUILDX_CACHE),mode=max --cache-from type=local,src=$(BUILDX_CACHE) --platform linux/amd64,linux/arm64
+DOCKER_BUILD := docker build
+
+# Comment this to just build locally
+DOCKER_PUSH := --push
+
 
 VERSION ?= $(shell ./scripts/git-version)
 
-DOCKER_REPO=quay.io/dexidp/dex
+DOCKER_REPO=ghcr.io/skasproject/dex
 DOCKER_IMAGE=$(DOCKER_REPO):$(VERSION)
 
 $( shell mkdir -p bin )
@@ -91,7 +101,7 @@ fix: ## Fix lint violations
 
 .PHONY: docker-image
 docker-image:
-	@sudo docker build -t $(DOCKER_IMAGE) .
+	$(DOCKER_BUILD) ${DOCKER_PUSH} -t $(DOCKER_IMAGE)  .
 
 .PHONY: verify-proto
 verify-proto: proto

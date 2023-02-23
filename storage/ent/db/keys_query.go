@@ -261,7 +261,6 @@ func (kq *KeysQuery) Clone() *KeysQuery {
 //		GroupBy(keys.FieldVerificationKeys).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (kq *KeysQuery) GroupBy(field string, fields ...string) *KeysGroupBy {
 	grbuild := &KeysGroupBy{config: kq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (kq *KeysQuery) GroupBy(field string, fields ...string) *KeysGroupBy {
 //	client.Keys.Query().
 //		Select(keys.FieldVerificationKeys).
 //		Scan(ctx, &v)
-//
 func (kq *KeysQuery) Select(fields ...string) *KeysSelect {
 	kq.fields = append(kq.fields, fields...)
 	selbuild := &KeysSelect{KeysQuery: kq}
@@ -318,10 +316,10 @@ func (kq *KeysQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Keys, e
 		nodes = []*Keys{}
 		_spec = kq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Keys).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &Keys{config: kq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (kq *KeysQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (kq *KeysQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := kq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := kq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (kq *KeysQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (kgb *KeysGroupBy) Aggregate(fns ...AggregateFunc) *KeysGroupBy {
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (kgb *KeysGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (kgb *KeysGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := kgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (kgb *KeysGroupBy) Scan(ctx context.Context, v interface{}) error {
 	return kgb.sqlScan(ctx, v)
 }
 
-func (kgb *KeysGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (kgb *KeysGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range kgb.fields {
 		if !keys.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type KeysSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (ks *KeysSelect) Scan(ctx context.Context, v interface{}) error {
+func (ks *KeysSelect) Scan(ctx context.Context, v any) error {
 	if err := ks.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (ks *KeysSelect) Scan(ctx context.Context, v interface{}) error {
 	return ks.sqlScan(ctx, v)
 }
 
-func (ks *KeysSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (ks *KeysSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := ks.sql.Query()
 	if err := ks.driver.Query(ctx, query, args, rows); err != nil {

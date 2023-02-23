@@ -261,7 +261,6 @@ func (oq *OAuth2ClientQuery) Clone() *OAuth2ClientQuery {
 //		GroupBy(oauth2client.FieldSecret).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (oq *OAuth2ClientQuery) GroupBy(field string, fields ...string) *OAuth2ClientGroupBy {
 	grbuild := &OAuth2ClientGroupBy{config: oq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (oq *OAuth2ClientQuery) GroupBy(field string, fields ...string) *OAuth2Clie
 //	client.OAuth2Client.Query().
 //		Select(oauth2client.FieldSecret).
 //		Scan(ctx, &v)
-//
 func (oq *OAuth2ClientQuery) Select(fields ...string) *OAuth2ClientSelect {
 	oq.fields = append(oq.fields, fields...)
 	selbuild := &OAuth2ClientSelect{OAuth2ClientQuery: oq}
@@ -318,10 +316,10 @@ func (oq *OAuth2ClientQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 		nodes = []*OAuth2Client{}
 		_spec = oq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*OAuth2Client).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &OAuth2Client{config: oq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (oq *OAuth2ClientQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (oq *OAuth2ClientQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := oq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := oq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (oq *OAuth2ClientQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (ogb *OAuth2ClientGroupBy) Aggregate(fns ...AggregateFunc) *OAuth2ClientGro
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (ogb *OAuth2ClientGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (ogb *OAuth2ClientGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := ogb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (ogb *OAuth2ClientGroupBy) Scan(ctx context.Context, v interface{}) error {
 	return ogb.sqlScan(ctx, v)
 }
 
-func (ogb *OAuth2ClientGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (ogb *OAuth2ClientGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range ogb.fields {
 		if !oauth2client.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type OAuth2ClientSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (os *OAuth2ClientSelect) Scan(ctx context.Context, v interface{}) error {
+func (os *OAuth2ClientSelect) Scan(ctx context.Context, v any) error {
 	if err := os.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (os *OAuth2ClientSelect) Scan(ctx context.Context, v interface{}) error {
 	return os.sqlScan(ctx, v)
 }
 
-func (os *OAuth2ClientSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (os *OAuth2ClientSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := os.sql.Query()
 	if err := os.driver.Query(ctx, query, args, rows); err != nil {

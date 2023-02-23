@@ -33,7 +33,7 @@ func IDNEQ(id string) predicate.RefreshToken {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...string) predicate.RefreshToken {
 	return predicate.RefreshToken(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -44,7 +44,7 @@ func IDIn(ids ...string) predicate.RefreshToken {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...string) predicate.RefreshToken {
 	return predicate.RefreshToken(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -187,7 +187,7 @@ func ClientIDNEQ(v string) predicate.RefreshToken {
 
 // ClientIDIn applies the In predicate on the "client_id" field.
 func ClientIDIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -198,7 +198,7 @@ func ClientIDIn(vs ...string) predicate.RefreshToken {
 
 // ClientIDNotIn applies the NotIn predicate on the "client_id" field.
 func ClientIDNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -300,7 +300,7 @@ func NonceNEQ(v string) predicate.RefreshToken {
 
 // NonceIn applies the In predicate on the "nonce" field.
 func NonceIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -311,7 +311,7 @@ func NonceIn(vs ...string) predicate.RefreshToken {
 
 // NonceNotIn applies the NotIn predicate on the "nonce" field.
 func NonceNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -399,7 +399,7 @@ func ClaimsUserIDNEQ(v string) predicate.RefreshToken {
 
 // ClaimsUserIDIn applies the In predicate on the "claims_user_id" field.
 func ClaimsUserIDIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -410,7 +410,7 @@ func ClaimsUserIDIn(vs ...string) predicate.RefreshToken {
 
 // ClaimsUserIDNotIn applies the NotIn predicate on the "claims_user_id" field.
 func ClaimsUserIDNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -498,7 +498,7 @@ func ClaimsUsernameNEQ(v string) predicate.RefreshToken {
 
 // ClaimsUsernameIn applies the In predicate on the "claims_username" field.
 func ClaimsUsernameIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -509,7 +509,7 @@ func ClaimsUsernameIn(vs ...string) predicate.RefreshToken {
 
 // ClaimsUsernameNotIn applies the NotIn predicate on the "claims_username" field.
 func ClaimsUsernameNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -597,7 +597,7 @@ func ClaimsEmailNEQ(v string) predicate.RefreshToken {
 
 // ClaimsEmailIn applies the In predicate on the "claims_email" field.
 func ClaimsEmailIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -608,7 +608,7 @@ func ClaimsEmailIn(vs ...string) predicate.RefreshToken {
 
 // ClaimsEmailNotIn applies the NotIn predicate on the "claims_email" field.
 func ClaimsEmailNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -724,7 +724,7 @@ func ClaimsPreferredUsernameNEQ(v string) predicate.RefreshToken {
 
 // ClaimsPreferredUsernameIn applies the In predicate on the "claims_preferred_username" field.
 func ClaimsPreferredUsernameIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -735,7 +735,7 @@ func ClaimsPreferredUsernameIn(vs ...string) predicate.RefreshToken {
 
 // ClaimsPreferredUsernameNotIn applies the NotIn predicate on the "claims_preferred_username" field.
 func ClaimsPreferredUsernameNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -823,7 +823,7 @@ func ConnectorIDNEQ(v string) predicate.RefreshToken {
 
 // ConnectorIDIn applies the In predicate on the "connector_id" field.
 func ConnectorIDIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -834,7 +834,7 @@ func ConnectorIDIn(vs ...string) predicate.RefreshToken {
 
 // ConnectorIDNotIn applies the NotIn predicate on the "connector_id" field.
 func ConnectorIDNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -922,7 +922,7 @@ func ConnectorDataNEQ(v []byte) predicate.RefreshToken {
 
 // ConnectorDataIn applies the In predicate on the "connector_data" field.
 func ConnectorDataIn(vs ...[]byte) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -933,7 +933,7 @@ func ConnectorDataIn(vs ...[]byte) predicate.RefreshToken {
 
 // ConnectorDataNotIn applies the NotIn predicate on the "connector_data" field.
 func ConnectorDataNotIn(vs ...[]byte) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1000,7 +1000,7 @@ func TokenNEQ(v string) predicate.RefreshToken {
 
 // TokenIn applies the In predicate on the "token" field.
 func TokenIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1011,7 +1011,7 @@ func TokenIn(vs ...string) predicate.RefreshToken {
 
 // TokenNotIn applies the NotIn predicate on the "token" field.
 func TokenNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1099,7 +1099,7 @@ func ObsoleteTokenNEQ(v string) predicate.RefreshToken {
 
 // ObsoleteTokenIn applies the In predicate on the "obsolete_token" field.
 func ObsoleteTokenIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1110,7 +1110,7 @@ func ObsoleteTokenIn(vs ...string) predicate.RefreshToken {
 
 // ObsoleteTokenNotIn applies the NotIn predicate on the "obsolete_token" field.
 func ObsoleteTokenNotIn(vs ...string) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1198,7 +1198,7 @@ func CreatedAtNEQ(v time.Time) predicate.RefreshToken {
 
 // CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1209,7 +1209,7 @@ func CreatedAtIn(vs ...time.Time) predicate.RefreshToken {
 
 // CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1262,7 +1262,7 @@ func LastUsedNEQ(v time.Time) predicate.RefreshToken {
 
 // LastUsedIn applies the In predicate on the "last_used" field.
 func LastUsedIn(vs ...time.Time) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1273,7 +1273,7 @@ func LastUsedIn(vs ...time.Time) predicate.RefreshToken {
 
 // LastUsedNotIn applies the NotIn predicate on the "last_used" field.
 func LastUsedNotIn(vs ...time.Time) predicate.RefreshToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

@@ -261,7 +261,6 @@ func (acq *AuthCodeQuery) Clone() *AuthCodeQuery {
 //		GroupBy(authcode.FieldClientID).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (acq *AuthCodeQuery) GroupBy(field string, fields ...string) *AuthCodeGroupBy {
 	grbuild := &AuthCodeGroupBy{config: acq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (acq *AuthCodeQuery) GroupBy(field string, fields ...string) *AuthCodeGroup
 //	client.AuthCode.Query().
 //		Select(authcode.FieldClientID).
 //		Scan(ctx, &v)
-//
 func (acq *AuthCodeQuery) Select(fields ...string) *AuthCodeSelect {
 	acq.fields = append(acq.fields, fields...)
 	selbuild := &AuthCodeSelect{AuthCodeQuery: acq}
@@ -318,10 +316,10 @@ func (acq *AuthCodeQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Au
 		nodes = []*AuthCode{}
 		_spec = acq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*AuthCode).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &AuthCode{config: acq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (acq *AuthCodeQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (acq *AuthCodeQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := acq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := acq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (acq *AuthCodeQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (acgb *AuthCodeGroupBy) Aggregate(fns ...AggregateFunc) *AuthCodeGroupBy {
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (acgb *AuthCodeGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (acgb *AuthCodeGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := acgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (acgb *AuthCodeGroupBy) Scan(ctx context.Context, v interface{}) error {
 	return acgb.sqlScan(ctx, v)
 }
 
-func (acgb *AuthCodeGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (acgb *AuthCodeGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range acgb.fields {
 		if !authcode.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type AuthCodeSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (acs *AuthCodeSelect) Scan(ctx context.Context, v interface{}) error {
+func (acs *AuthCodeSelect) Scan(ctx context.Context, v any) error {
 	if err := acs.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (acs *AuthCodeSelect) Scan(ctx context.Context, v interface{}) error {
 	return acs.sqlScan(ctx, v)
 }
 
-func (acs *AuthCodeSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (acs *AuthCodeSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := acs.sql.Query()
 	if err := acs.driver.Query(ctx, query, args, rows); err != nil {

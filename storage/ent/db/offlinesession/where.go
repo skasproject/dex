@@ -31,7 +31,7 @@ func IDNEQ(id string) predicate.OfflineSession {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...string) predicate.OfflineSession {
 	return predicate.OfflineSession(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -42,7 +42,7 @@ func IDIn(ids ...string) predicate.OfflineSession {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...string) predicate.OfflineSession {
 	return predicate.OfflineSession(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -122,7 +122,7 @@ func UserIDNEQ(v string) predicate.OfflineSession {
 
 // UserIDIn applies the In predicate on the "user_id" field.
 func UserIDIn(vs ...string) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -133,7 +133,7 @@ func UserIDIn(vs ...string) predicate.OfflineSession {
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
 func UserIDNotIn(vs ...string) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -221,7 +221,7 @@ func ConnIDNEQ(v string) predicate.OfflineSession {
 
 // ConnIDIn applies the In predicate on the "conn_id" field.
 func ConnIDIn(vs ...string) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -232,7 +232,7 @@ func ConnIDIn(vs ...string) predicate.OfflineSession {
 
 // ConnIDNotIn applies the NotIn predicate on the "conn_id" field.
 func ConnIDNotIn(vs ...string) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -320,7 +320,7 @@ func RefreshNEQ(v []byte) predicate.OfflineSession {
 
 // RefreshIn applies the In predicate on the "refresh" field.
 func RefreshIn(vs ...[]byte) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -331,7 +331,7 @@ func RefreshIn(vs ...[]byte) predicate.OfflineSession {
 
 // RefreshNotIn applies the NotIn predicate on the "refresh" field.
 func RefreshNotIn(vs ...[]byte) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -384,7 +384,7 @@ func ConnectorDataNEQ(v []byte) predicate.OfflineSession {
 
 // ConnectorDataIn applies the In predicate on the "connector_data" field.
 func ConnectorDataIn(vs ...[]byte) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -395,7 +395,7 @@ func ConnectorDataIn(vs ...[]byte) predicate.OfflineSession {
 
 // ConnectorDataNotIn applies the NotIn predicate on the "connector_data" field.
 func ConnectorDataNotIn(vs ...[]byte) predicate.OfflineSession {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

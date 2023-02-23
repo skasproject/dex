@@ -33,7 +33,7 @@ func IDNEQ(id string) predicate.AuthCode {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...string) predicate.AuthCode {
 	return predicate.AuthCode(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -44,7 +44,7 @@ func IDIn(ids ...string) predicate.AuthCode {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...string) predicate.AuthCode {
 	return predicate.AuthCode(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -187,7 +187,7 @@ func ClientIDNEQ(v string) predicate.AuthCode {
 
 // ClientIDIn applies the In predicate on the "client_id" field.
 func ClientIDIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -198,7 +198,7 @@ func ClientIDIn(vs ...string) predicate.AuthCode {
 
 // ClientIDNotIn applies the NotIn predicate on the "client_id" field.
 func ClientIDNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -300,7 +300,7 @@ func NonceNEQ(v string) predicate.AuthCode {
 
 // NonceIn applies the In predicate on the "nonce" field.
 func NonceIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -311,7 +311,7 @@ func NonceIn(vs ...string) predicate.AuthCode {
 
 // NonceNotIn applies the NotIn predicate on the "nonce" field.
 func NonceNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -399,7 +399,7 @@ func RedirectURINEQ(v string) predicate.AuthCode {
 
 // RedirectURIIn applies the In predicate on the "redirect_uri" field.
 func RedirectURIIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -410,7 +410,7 @@ func RedirectURIIn(vs ...string) predicate.AuthCode {
 
 // RedirectURINotIn applies the NotIn predicate on the "redirect_uri" field.
 func RedirectURINotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -498,7 +498,7 @@ func ClaimsUserIDNEQ(v string) predicate.AuthCode {
 
 // ClaimsUserIDIn applies the In predicate on the "claims_user_id" field.
 func ClaimsUserIDIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -509,7 +509,7 @@ func ClaimsUserIDIn(vs ...string) predicate.AuthCode {
 
 // ClaimsUserIDNotIn applies the NotIn predicate on the "claims_user_id" field.
 func ClaimsUserIDNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -597,7 +597,7 @@ func ClaimsUsernameNEQ(v string) predicate.AuthCode {
 
 // ClaimsUsernameIn applies the In predicate on the "claims_username" field.
 func ClaimsUsernameIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -608,7 +608,7 @@ func ClaimsUsernameIn(vs ...string) predicate.AuthCode {
 
 // ClaimsUsernameNotIn applies the NotIn predicate on the "claims_username" field.
 func ClaimsUsernameNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -696,7 +696,7 @@ func ClaimsEmailNEQ(v string) predicate.AuthCode {
 
 // ClaimsEmailIn applies the In predicate on the "claims_email" field.
 func ClaimsEmailIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -707,7 +707,7 @@ func ClaimsEmailIn(vs ...string) predicate.AuthCode {
 
 // ClaimsEmailNotIn applies the NotIn predicate on the "claims_email" field.
 func ClaimsEmailNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -823,7 +823,7 @@ func ClaimsPreferredUsernameNEQ(v string) predicate.AuthCode {
 
 // ClaimsPreferredUsernameIn applies the In predicate on the "claims_preferred_username" field.
 func ClaimsPreferredUsernameIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -834,7 +834,7 @@ func ClaimsPreferredUsernameIn(vs ...string) predicate.AuthCode {
 
 // ClaimsPreferredUsernameNotIn applies the NotIn predicate on the "claims_preferred_username" field.
 func ClaimsPreferredUsernameNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -922,7 +922,7 @@ func ConnectorIDNEQ(v string) predicate.AuthCode {
 
 // ConnectorIDIn applies the In predicate on the "connector_id" field.
 func ConnectorIDIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -933,7 +933,7 @@ func ConnectorIDIn(vs ...string) predicate.AuthCode {
 
 // ConnectorIDNotIn applies the NotIn predicate on the "connector_id" field.
 func ConnectorIDNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1021,7 +1021,7 @@ func ConnectorDataNEQ(v []byte) predicate.AuthCode {
 
 // ConnectorDataIn applies the In predicate on the "connector_data" field.
 func ConnectorDataIn(vs ...[]byte) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1032,7 +1032,7 @@ func ConnectorDataIn(vs ...[]byte) predicate.AuthCode {
 
 // ConnectorDataNotIn applies the NotIn predicate on the "connector_data" field.
 func ConnectorDataNotIn(vs ...[]byte) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1099,7 +1099,7 @@ func ExpiryNEQ(v time.Time) predicate.AuthCode {
 
 // ExpiryIn applies the In predicate on the "expiry" field.
 func ExpiryIn(vs ...time.Time) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1110,7 +1110,7 @@ func ExpiryIn(vs ...time.Time) predicate.AuthCode {
 
 // ExpiryNotIn applies the NotIn predicate on the "expiry" field.
 func ExpiryNotIn(vs ...time.Time) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1163,7 +1163,7 @@ func CodeChallengeNEQ(v string) predicate.AuthCode {
 
 // CodeChallengeIn applies the In predicate on the "code_challenge" field.
 func CodeChallengeIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1174,7 +1174,7 @@ func CodeChallengeIn(vs ...string) predicate.AuthCode {
 
 // CodeChallengeNotIn applies the NotIn predicate on the "code_challenge" field.
 func CodeChallengeNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1262,7 +1262,7 @@ func CodeChallengeMethodNEQ(v string) predicate.AuthCode {
 
 // CodeChallengeMethodIn applies the In predicate on the "code_challenge_method" field.
 func CodeChallengeMethodIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1273,7 +1273,7 @@ func CodeChallengeMethodIn(vs ...string) predicate.AuthCode {
 
 // CodeChallengeMethodNotIn applies the NotIn predicate on the "code_challenge_method" field.
 func CodeChallengeMethodNotIn(vs ...string) predicate.AuthCode {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

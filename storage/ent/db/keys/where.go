@@ -33,7 +33,7 @@ func IDNEQ(id string) predicate.Keys {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...string) predicate.Keys {
 	return predicate.Keys(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -44,7 +44,7 @@ func IDIn(ids ...string) predicate.Keys {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...string) predicate.Keys {
 	return predicate.Keys(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -103,7 +103,7 @@ func NextRotationNEQ(v time.Time) predicate.Keys {
 
 // NextRotationIn applies the In predicate on the "next_rotation" field.
 func NextRotationIn(vs ...time.Time) predicate.Keys {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -114,7 +114,7 @@ func NextRotationIn(vs ...time.Time) predicate.Keys {
 
 // NextRotationNotIn applies the NotIn predicate on the "next_rotation" field.
 func NextRotationNotIn(vs ...time.Time) predicate.Keys {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

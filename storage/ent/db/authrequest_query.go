@@ -261,7 +261,6 @@ func (arq *AuthRequestQuery) Clone() *AuthRequestQuery {
 //		GroupBy(authrequest.FieldClientID).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (arq *AuthRequestQuery) GroupBy(field string, fields ...string) *AuthRequestGroupBy {
 	grbuild := &AuthRequestGroupBy{config: arq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (arq *AuthRequestQuery) GroupBy(field string, fields ...string) *AuthReques
 //	client.AuthRequest.Query().
 //		Select(authrequest.FieldClientID).
 //		Scan(ctx, &v)
-//
 func (arq *AuthRequestQuery) Select(fields ...string) *AuthRequestSelect {
 	arq.fields = append(arq.fields, fields...)
 	selbuild := &AuthRequestSelect{AuthRequestQuery: arq}
@@ -318,10 +316,10 @@ func (arq *AuthRequestQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 		nodes = []*AuthRequest{}
 		_spec = arq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*AuthRequest).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &AuthRequest{config: arq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (arq *AuthRequestQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (arq *AuthRequestQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := arq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := arq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (arq *AuthRequestQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (argb *AuthRequestGroupBy) Aggregate(fns ...AggregateFunc) *AuthRequestGrou
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (argb *AuthRequestGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (argb *AuthRequestGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := argb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (argb *AuthRequestGroupBy) Scan(ctx context.Context, v interface{}) error {
 	return argb.sqlScan(ctx, v)
 }
 
-func (argb *AuthRequestGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (argb *AuthRequestGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range argb.fields {
 		if !authrequest.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type AuthRequestSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (ars *AuthRequestSelect) Scan(ctx context.Context, v interface{}) error {
+func (ars *AuthRequestSelect) Scan(ctx context.Context, v any) error {
 	if err := ars.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (ars *AuthRequestSelect) Scan(ctx context.Context, v interface{}) error {
 	return ars.sqlScan(ctx, v)
 }
 
-func (ars *AuthRequestSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (ars *AuthRequestSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := ars.sql.Query()
 	if err := ars.driver.Query(ctx, query, args, rows); err != nil {

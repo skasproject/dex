@@ -261,7 +261,6 @@ func (rtq *RefreshTokenQuery) Clone() *RefreshTokenQuery {
 //		GroupBy(refreshtoken.FieldClientID).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (rtq *RefreshTokenQuery) GroupBy(field string, fields ...string) *RefreshTokenGroupBy {
 	grbuild := &RefreshTokenGroupBy{config: rtq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (rtq *RefreshTokenQuery) GroupBy(field string, fields ...string) *RefreshTo
 //	client.RefreshToken.Query().
 //		Select(refreshtoken.FieldClientID).
 //		Scan(ctx, &v)
-//
 func (rtq *RefreshTokenQuery) Select(fields ...string) *RefreshTokenSelect {
 	rtq.fields = append(rtq.fields, fields...)
 	selbuild := &RefreshTokenSelect{RefreshTokenQuery: rtq}
@@ -318,10 +316,10 @@ func (rtq *RefreshTokenQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([
 		nodes = []*RefreshToken{}
 		_spec = rtq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*RefreshToken).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &RefreshToken{config: rtq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (rtq *RefreshTokenQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (rtq *RefreshTokenQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := rtq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := rtq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (rtq *RefreshTokenQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (rtgb *RefreshTokenGroupBy) Aggregate(fns ...AggregateFunc) *RefreshTokenGr
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (rtgb *RefreshTokenGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (rtgb *RefreshTokenGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := rtgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (rtgb *RefreshTokenGroupBy) Scan(ctx context.Context, v interface{}) error 
 	return rtgb.sqlScan(ctx, v)
 }
 
-func (rtgb *RefreshTokenGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (rtgb *RefreshTokenGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range rtgb.fields {
 		if !refreshtoken.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type RefreshTokenSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (rts *RefreshTokenSelect) Scan(ctx context.Context, v interface{}) error {
+func (rts *RefreshTokenSelect) Scan(ctx context.Context, v any) error {
 	if err := rts.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (rts *RefreshTokenSelect) Scan(ctx context.Context, v interface{}) error {
 	return rts.sqlScan(ctx, v)
 }
 
-func (rts *RefreshTokenSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (rts *RefreshTokenSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := rts.sql.Query()
 	if err := rts.driver.Query(ctx, query, args, rows); err != nil {

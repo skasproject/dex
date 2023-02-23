@@ -31,7 +31,7 @@ func IDNEQ(id string) predicate.Connector {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...string) predicate.Connector {
 	return predicate.Connector(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -42,7 +42,7 @@ func IDIn(ids ...string) predicate.Connector {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...string) predicate.Connector {
 	return predicate.Connector(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -122,7 +122,7 @@ func TypeNEQ(v string) predicate.Connector {
 
 // TypeIn applies the In predicate on the "type" field.
 func TypeIn(vs ...string) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -133,7 +133,7 @@ func TypeIn(vs ...string) predicate.Connector {
 
 // TypeNotIn applies the NotIn predicate on the "type" field.
 func TypeNotIn(vs ...string) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -221,7 +221,7 @@ func NameNEQ(v string) predicate.Connector {
 
 // NameIn applies the In predicate on the "name" field.
 func NameIn(vs ...string) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -232,7 +232,7 @@ func NameIn(vs ...string) predicate.Connector {
 
 // NameNotIn applies the NotIn predicate on the "name" field.
 func NameNotIn(vs ...string) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -320,7 +320,7 @@ func ResourceVersionNEQ(v string) predicate.Connector {
 
 // ResourceVersionIn applies the In predicate on the "resource_version" field.
 func ResourceVersionIn(vs ...string) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -331,7 +331,7 @@ func ResourceVersionIn(vs ...string) predicate.Connector {
 
 // ResourceVersionNotIn applies the NotIn predicate on the "resource_version" field.
 func ResourceVersionNotIn(vs ...string) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -419,7 +419,7 @@ func ConfigNEQ(v []byte) predicate.Connector {
 
 // ConfigIn applies the In predicate on the "config" field.
 func ConfigIn(vs ...[]byte) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -430,7 +430,7 @@ func ConfigIn(vs ...[]byte) predicate.Connector {
 
 // ConfigNotIn applies the NotIn predicate on the "config" field.
 func ConfigNotIn(vs ...[]byte) predicate.Connector {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

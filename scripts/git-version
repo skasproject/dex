@@ -9,9 +9,9 @@ TAG=$(git describe --exact-match --abbrev=0 --tags ${COMMIT} 2> /dev/null || tru
 
 # use the matching tag as the version, if available
 if [ -z "$TAG" ]; then
-    VERSION=$COMMIT
+    VERSION=$COMMIT-skas
 else
-    VERSION=$TAG
+    VERSION=$TAG-skas
 fi
 
 # check for changed files (not untracked files)

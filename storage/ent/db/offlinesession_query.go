@@ -261,7 +261,6 @@ func (osq *OfflineSessionQuery) Clone() *OfflineSessionQuery {
 //		GroupBy(offlinesession.FieldUserID).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (osq *OfflineSessionQuery) GroupBy(field string, fields ...string) *OfflineSessionGroupBy {
 	grbuild := &OfflineSessionGroupBy{config: osq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (osq *OfflineSessionQuery) GroupBy(field string, fields ...string) *Offline
 //	client.OfflineSession.Query().
 //		Select(offlinesession.FieldUserID).
 //		Scan(ctx, &v)
-//
 func (osq *OfflineSessionQuery) Select(fields ...string) *OfflineSessionSelect {
 	osq.fields = append(osq.fields, fields...)
 	selbuild := &OfflineSessionSelect{OfflineSessionQuery: osq}
@@ -318,10 +316,10 @@ func (osq *OfflineSessionQuery) sqlAll(ctx context.Context, hooks ...queryHook) 
 		nodes = []*OfflineSession{}
 		_spec = osq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*OfflineSession).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &OfflineSession{config: osq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (osq *OfflineSessionQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (osq *OfflineSessionQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := osq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := osq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (osq *OfflineSessionQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (osgb *OfflineSessionGroupBy) Aggregate(fns ...AggregateFunc) *OfflineSessi
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (osgb *OfflineSessionGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (osgb *OfflineSessionGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := osgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (osgb *OfflineSessionGroupBy) Scan(ctx context.Context, v interface{}) erro
 	return osgb.sqlScan(ctx, v)
 }
 
-func (osgb *OfflineSessionGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (osgb *OfflineSessionGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range osgb.fields {
 		if !offlinesession.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type OfflineSessionSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (oss *OfflineSessionSelect) Scan(ctx context.Context, v interface{}) error {
+func (oss *OfflineSessionSelect) Scan(ctx context.Context, v any) error {
 	if err := oss.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (oss *OfflineSessionSelect) Scan(ctx context.Context, v interface{}) error 
 	return oss.sqlScan(ctx, v)
 }
 
-func (oss *OfflineSessionSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (oss *OfflineSessionSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := oss.sql.Query()
 	if err := oss.driver.Query(ctx, query, args, rows); err != nil {

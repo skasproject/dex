@@ -33,7 +33,7 @@ func IDNEQ(id int) predicate.DeviceToken {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...int) predicate.DeviceToken {
 	return predicate.DeviceToken(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -44,7 +44,7 @@ func IDIn(ids ...int) predicate.DeviceToken {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...int) predicate.DeviceToken {
 	return predicate.DeviceToken(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -152,7 +152,7 @@ func DeviceCodeNEQ(v string) predicate.DeviceToken {
 
 // DeviceCodeIn applies the In predicate on the "device_code" field.
 func DeviceCodeIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -163,7 +163,7 @@ func DeviceCodeIn(vs ...string) predicate.DeviceToken {
 
 // DeviceCodeNotIn applies the NotIn predicate on the "device_code" field.
 func DeviceCodeNotIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -251,7 +251,7 @@ func StatusNEQ(v string) predicate.DeviceToken {
 
 // StatusIn applies the In predicate on the "status" field.
 func StatusIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -262,7 +262,7 @@ func StatusIn(vs ...string) predicate.DeviceToken {
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
 func StatusNotIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -350,7 +350,7 @@ func TokenNEQ(v []byte) predicate.DeviceToken {
 
 // TokenIn applies the In predicate on the "token" field.
 func TokenIn(vs ...[]byte) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -361,7 +361,7 @@ func TokenIn(vs ...[]byte) predicate.DeviceToken {
 
 // TokenNotIn applies the NotIn predicate on the "token" field.
 func TokenNotIn(vs ...[]byte) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -428,7 +428,7 @@ func ExpiryNEQ(v time.Time) predicate.DeviceToken {
 
 // ExpiryIn applies the In predicate on the "expiry" field.
 func ExpiryIn(vs ...time.Time) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -439,7 +439,7 @@ func ExpiryIn(vs ...time.Time) predicate.DeviceToken {
 
 // ExpiryNotIn applies the NotIn predicate on the "expiry" field.
 func ExpiryNotIn(vs ...time.Time) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -492,7 +492,7 @@ func LastRequestNEQ(v time.Time) predicate.DeviceToken {
 
 // LastRequestIn applies the In predicate on the "last_request" field.
 func LastRequestIn(vs ...time.Time) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -503,7 +503,7 @@ func LastRequestIn(vs ...time.Time) predicate.DeviceToken {
 
 // LastRequestNotIn applies the NotIn predicate on the "last_request" field.
 func LastRequestNotIn(vs ...time.Time) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -556,7 +556,7 @@ func PollIntervalNEQ(v int) predicate.DeviceToken {
 
 // PollIntervalIn applies the In predicate on the "poll_interval" field.
 func PollIntervalIn(vs ...int) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -567,7 +567,7 @@ func PollIntervalIn(vs ...int) predicate.DeviceToken {
 
 // PollIntervalNotIn applies the NotIn predicate on the "poll_interval" field.
 func PollIntervalNotIn(vs ...int) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -620,7 +620,7 @@ func CodeChallengeNEQ(v string) predicate.DeviceToken {
 
 // CodeChallengeIn applies the In predicate on the "code_challenge" field.
 func CodeChallengeIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -631,7 +631,7 @@ func CodeChallengeIn(vs ...string) predicate.DeviceToken {
 
 // CodeChallengeNotIn applies the NotIn predicate on the "code_challenge" field.
 func CodeChallengeNotIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -719,7 +719,7 @@ func CodeChallengeMethodNEQ(v string) predicate.DeviceToken {
 
 // CodeChallengeMethodIn applies the In predicate on the "code_challenge_method" field.
 func CodeChallengeMethodIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -730,7 +730,7 @@ func CodeChallengeMethodIn(vs ...string) predicate.DeviceToken {
 
 // CodeChallengeMethodNotIn applies the NotIn predicate on the "code_challenge_method" field.
 func CodeChallengeMethodNotIn(vs ...string) predicate.DeviceToken {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

@@ -33,7 +33,7 @@ func IDNEQ(id string) predicate.AuthRequest {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...string) predicate.AuthRequest {
 	return predicate.AuthRequest(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -44,7 +44,7 @@ func IDIn(ids ...string) predicate.AuthRequest {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...string) predicate.AuthRequest {
 	return predicate.AuthRequest(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -215,7 +215,7 @@ func ClientIDNEQ(v string) predicate.AuthRequest {
 
 // ClientIDIn applies the In predicate on the "client_id" field.
 func ClientIDIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -226,7 +226,7 @@ func ClientIDIn(vs ...string) predicate.AuthRequest {
 
 // ClientIDNotIn applies the NotIn predicate on the "client_id" field.
 func ClientIDNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -342,7 +342,7 @@ func RedirectURINEQ(v string) predicate.AuthRequest {
 
 // RedirectURIIn applies the In predicate on the "redirect_uri" field.
 func RedirectURIIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -353,7 +353,7 @@ func RedirectURIIn(vs ...string) predicate.AuthRequest {
 
 // RedirectURINotIn applies the NotIn predicate on the "redirect_uri" field.
 func RedirectURINotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -441,7 +441,7 @@ func NonceNEQ(v string) predicate.AuthRequest {
 
 // NonceIn applies the In predicate on the "nonce" field.
 func NonceIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -452,7 +452,7 @@ func NonceIn(vs ...string) predicate.AuthRequest {
 
 // NonceNotIn applies the NotIn predicate on the "nonce" field.
 func NonceNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -540,7 +540,7 @@ func StateNEQ(v string) predicate.AuthRequest {
 
 // StateIn applies the In predicate on the "state" field.
 func StateIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -551,7 +551,7 @@ func StateIn(vs ...string) predicate.AuthRequest {
 
 // StateNotIn applies the NotIn predicate on the "state" field.
 func StateNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -667,7 +667,7 @@ func ClaimsUserIDNEQ(v string) predicate.AuthRequest {
 
 // ClaimsUserIDIn applies the In predicate on the "claims_user_id" field.
 func ClaimsUserIDIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -678,7 +678,7 @@ func ClaimsUserIDIn(vs ...string) predicate.AuthRequest {
 
 // ClaimsUserIDNotIn applies the NotIn predicate on the "claims_user_id" field.
 func ClaimsUserIDNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -766,7 +766,7 @@ func ClaimsUsernameNEQ(v string) predicate.AuthRequest {
 
 // ClaimsUsernameIn applies the In predicate on the "claims_username" field.
 func ClaimsUsernameIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -777,7 +777,7 @@ func ClaimsUsernameIn(vs ...string) predicate.AuthRequest {
 
 // ClaimsUsernameNotIn applies the NotIn predicate on the "claims_username" field.
 func ClaimsUsernameNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -865,7 +865,7 @@ func ClaimsEmailNEQ(v string) predicate.AuthRequest {
 
 // ClaimsEmailIn applies the In predicate on the "claims_email" field.
 func ClaimsEmailIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -876,7 +876,7 @@ func ClaimsEmailIn(vs ...string) predicate.AuthRequest {
 
 // ClaimsEmailNotIn applies the NotIn predicate on the "claims_email" field.
 func ClaimsEmailNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -992,7 +992,7 @@ func ClaimsPreferredUsernameNEQ(v string) predicate.AuthRequest {
 
 // ClaimsPreferredUsernameIn applies the In predicate on the "claims_preferred_username" field.
 func ClaimsPreferredUsernameIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1003,7 +1003,7 @@ func ClaimsPreferredUsernameIn(vs ...string) predicate.AuthRequest {
 
 // ClaimsPreferredUsernameNotIn applies the NotIn predicate on the "claims_preferred_username" field.
 func ClaimsPreferredUsernameNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1091,7 +1091,7 @@ func ConnectorIDNEQ(v string) predicate.AuthRequest {
 
 // ConnectorIDIn applies the In predicate on the "connector_id" field.
 func ConnectorIDIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1102,7 +1102,7 @@ func ConnectorIDIn(vs ...string) predicate.AuthRequest {
 
 // ConnectorIDNotIn applies the NotIn predicate on the "connector_id" field.
 func ConnectorIDNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1190,7 +1190,7 @@ func ConnectorDataNEQ(v []byte) predicate.AuthRequest {
 
 // ConnectorDataIn applies the In predicate on the "connector_data" field.
 func ConnectorDataIn(vs ...[]byte) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1201,7 +1201,7 @@ func ConnectorDataIn(vs ...[]byte) predicate.AuthRequest {
 
 // ConnectorDataNotIn applies the NotIn predicate on the "connector_data" field.
 func ConnectorDataNotIn(vs ...[]byte) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1268,7 +1268,7 @@ func ExpiryNEQ(v time.Time) predicate.AuthRequest {
 
 // ExpiryIn applies the In predicate on the "expiry" field.
 func ExpiryIn(vs ...time.Time) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1279,7 +1279,7 @@ func ExpiryIn(vs ...time.Time) predicate.AuthRequest {
 
 // ExpiryNotIn applies the NotIn predicate on the "expiry" field.
 func ExpiryNotIn(vs ...time.Time) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1332,7 +1332,7 @@ func CodeChallengeNEQ(v string) predicate.AuthRequest {
 
 // CodeChallengeIn applies the In predicate on the "code_challenge" field.
 func CodeChallengeIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1343,7 +1343,7 @@ func CodeChallengeIn(vs ...string) predicate.AuthRequest {
 
 // CodeChallengeNotIn applies the NotIn predicate on the "code_challenge" field.
 func CodeChallengeNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1431,7 +1431,7 @@ func CodeChallengeMethodNEQ(v string) predicate.AuthRequest {
 
 // CodeChallengeMethodIn applies the In predicate on the "code_challenge_method" field.
 func CodeChallengeMethodIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1442,7 +1442,7 @@ func CodeChallengeMethodIn(vs ...string) predicate.AuthRequest {
 
 // CodeChallengeMethodNotIn applies the NotIn predicate on the "code_challenge_method" field.
 func CodeChallengeMethodNotIn(vs ...string) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -1530,34 +1530,22 @@ func HmacKeyNEQ(v []byte) predicate.AuthRequest {
 
 // HmacKeyIn applies the In predicate on the "hmac_key" field.
 func HmacKeyIn(vs ...[]byte) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.AuthRequest(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
 		s.Where(sql.In(s.C(FieldHmacKey), v...))
 	})
 }
 
 // HmacKeyNotIn applies the NotIn predicate on the "hmac_key" field.
 func HmacKeyNotIn(vs ...[]byte) predicate.AuthRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.AuthRequest(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
 		s.Where(sql.NotIn(s.C(FieldHmacKey), v...))
 	})
 }

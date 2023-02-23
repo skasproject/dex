@@ -261,7 +261,6 @@ func (pq *PasswordQuery) Clone() *PasswordQuery {
 //		GroupBy(password.FieldEmail).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (pq *PasswordQuery) GroupBy(field string, fields ...string) *PasswordGroupBy {
 	grbuild := &PasswordGroupBy{config: pq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (pq *PasswordQuery) GroupBy(field string, fields ...string) *PasswordGroupB
 //	client.Password.Query().
 //		Select(password.FieldEmail).
 //		Scan(ctx, &v)
-//
 func (pq *PasswordQuery) Select(fields ...string) *PasswordSelect {
 	pq.fields = append(pq.fields, fields...)
 	selbuild := &PasswordSelect{PasswordQuery: pq}
@@ -318,10 +316,10 @@ func (pq *PasswordQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pas
 		nodes = []*Password{}
 		_spec = pq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Password).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &Password{config: pq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (pq *PasswordQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (pq *PasswordQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := pq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := pq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (pq *PasswordQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (pgb *PasswordGroupBy) Aggregate(fns ...AggregateFunc) *PasswordGroupBy {
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (pgb *PasswordGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (pgb *PasswordGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := pgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (pgb *PasswordGroupBy) Scan(ctx context.Context, v interface{}) error {
 	return pgb.sqlScan(ctx, v)
 }
 
-func (pgb *PasswordGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (pgb *PasswordGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range pgb.fields {
 		if !password.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type PasswordSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (ps *PasswordSelect) Scan(ctx context.Context, v interface{}) error {
+func (ps *PasswordSelect) Scan(ctx context.Context, v any) error {
 	if err := ps.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (ps *PasswordSelect) Scan(ctx context.Context, v interface{}) error {
 	return ps.sqlScan(ctx, v)
 }
 
-func (ps *PasswordSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (ps *PasswordSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := ps.sql.Query()
 	if err := ps.driver.Query(ctx, query, args, rows); err != nil {

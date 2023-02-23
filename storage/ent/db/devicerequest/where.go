@@ -33,7 +33,7 @@ func IDNEQ(id int) predicate.DeviceRequest {
 // IDIn applies the In predicate on the ID field.
 func IDIn(ids ...int) predicate.DeviceRequest {
 	return predicate.DeviceRequest(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -44,7 +44,7 @@ func IDIn(ids ...int) predicate.DeviceRequest {
 // IDNotIn applies the NotIn predicate on the ID field.
 func IDNotIn(ids ...int) predicate.DeviceRequest {
 	return predicate.DeviceRequest(func(s *sql.Selector) {
-		v := make([]interface{}, len(ids))
+		v := make([]any, len(ids))
 		for i := range v {
 			v[i] = ids[i]
 		}
@@ -131,7 +131,7 @@ func UserCodeNEQ(v string) predicate.DeviceRequest {
 
 // UserCodeIn applies the In predicate on the "user_code" field.
 func UserCodeIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -142,7 +142,7 @@ func UserCodeIn(vs ...string) predicate.DeviceRequest {
 
 // UserCodeNotIn applies the NotIn predicate on the "user_code" field.
 func UserCodeNotIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -230,7 +230,7 @@ func DeviceCodeNEQ(v string) predicate.DeviceRequest {
 
 // DeviceCodeIn applies the In predicate on the "device_code" field.
 func DeviceCodeIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -241,7 +241,7 @@ func DeviceCodeIn(vs ...string) predicate.DeviceRequest {
 
 // DeviceCodeNotIn applies the NotIn predicate on the "device_code" field.
 func DeviceCodeNotIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -329,7 +329,7 @@ func ClientIDNEQ(v string) predicate.DeviceRequest {
 
 // ClientIDIn applies the In predicate on the "client_id" field.
 func ClientIDIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -340,7 +340,7 @@ func ClientIDIn(vs ...string) predicate.DeviceRequest {
 
 // ClientIDNotIn applies the NotIn predicate on the "client_id" field.
 func ClientIDNotIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -428,7 +428,7 @@ func ClientSecretNEQ(v string) predicate.DeviceRequest {
 
 // ClientSecretIn applies the In predicate on the "client_secret" field.
 func ClientSecretIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -439,7 +439,7 @@ func ClientSecretIn(vs ...string) predicate.DeviceRequest {
 
 // ClientSecretNotIn applies the NotIn predicate on the "client_secret" field.
 func ClientSecretNotIn(vs ...string) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -541,7 +541,7 @@ func ExpiryNEQ(v time.Time) predicate.DeviceRequest {
 
 // ExpiryIn applies the In predicate on the "expiry" field.
 func ExpiryIn(vs ...time.Time) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
@@ -552,7 +552,7 @@ func ExpiryIn(vs ...time.Time) predicate.DeviceRequest {
 
 // ExpiryNotIn applies the NotIn predicate on the "expiry" field.
 func ExpiryNotIn(vs ...time.Time) predicate.DeviceRequest {
-	v := make([]interface{}, len(vs))
+	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}

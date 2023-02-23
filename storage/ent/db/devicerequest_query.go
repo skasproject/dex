@@ -261,7 +261,6 @@ func (drq *DeviceRequestQuery) Clone() *DeviceRequestQuery {
 //		GroupBy(devicerequest.FieldUserCode).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (drq *DeviceRequestQuery) GroupBy(field string, fields ...string) *DeviceRequestGroupBy {
 	grbuild := &DeviceRequestGroupBy{config: drq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (drq *DeviceRequestQuery) GroupBy(field string, fields ...string) *DeviceRe
 //	client.DeviceRequest.Query().
 //		Select(devicerequest.FieldUserCode).
 //		Scan(ctx, &v)
-//
 func (drq *DeviceRequestQuery) Select(fields ...string) *DeviceRequestSelect {
 	drq.fields = append(drq.fields, fields...)
 	selbuild := &DeviceRequestSelect{DeviceRequestQuery: drq}
@@ -318,10 +316,10 @@ func (drq *DeviceRequestQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 		nodes = []*DeviceRequest{}
 		_spec = drq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*DeviceRequest).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &DeviceRequest{config: drq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (drq *DeviceRequestQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (drq *DeviceRequestQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := drq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := drq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (drq *DeviceRequestQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (drgb *DeviceRequestGroupBy) Aggregate(fns ...AggregateFunc) *DeviceRequest
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (drgb *DeviceRequestGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (drgb *DeviceRequestGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := drgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (drgb *DeviceRequestGroupBy) Scan(ctx context.Context, v interface{}) error
 	return drgb.sqlScan(ctx, v)
 }
 
-func (drgb *DeviceRequestGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (drgb *DeviceRequestGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range drgb.fields {
 		if !devicerequest.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type DeviceRequestSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (drs *DeviceRequestSelect) Scan(ctx context.Context, v interface{}) error {
+func (drs *DeviceRequestSelect) Scan(ctx context.Context, v any) error {
 	if err := drs.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (drs *DeviceRequestSelect) Scan(ctx context.Context, v interface{}) error {
 	return drs.sqlScan(ctx, v)
 }
 
-func (drs *DeviceRequestSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (drs *DeviceRequestSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := drs.sql.Query()
 	if err := drs.driver.Query(ctx, query, args, rows); err != nil {

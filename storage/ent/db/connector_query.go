@@ -261,7 +261,6 @@ func (cq *ConnectorQuery) Clone() *ConnectorQuery {
 //		GroupBy(connector.FieldType).
 //		Aggregate(db.Count()).
 //		Scan(ctx, &v)
-//
 func (cq *ConnectorQuery) GroupBy(field string, fields ...string) *ConnectorGroupBy {
 	grbuild := &ConnectorGroupBy{config: cq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -288,7 +287,6 @@ func (cq *ConnectorQuery) GroupBy(field string, fields ...string) *ConnectorGrou
 //	client.Connector.Query().
 //		Select(connector.FieldType).
 //		Scan(ctx, &v)
-//
 func (cq *ConnectorQuery) Select(fields ...string) *ConnectorSelect {
 	cq.fields = append(cq.fields, fields...)
 	selbuild := &ConnectorSelect{ConnectorQuery: cq}
@@ -318,10 +316,10 @@ func (cq *ConnectorQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Co
 		nodes = []*Connector{}
 		_spec = cq.querySpec()
 	)
-	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
+	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Connector).scanValues(nil, columns)
 	}
-	_spec.Assign = func(columns []string, values []interface{}) error {
+	_spec.Assign = func(columns []string, values []any) error {
 		node := &Connector{config: cq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
@@ -348,11 +346,14 @@ func (cq *ConnectorQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (cq *ConnectorQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := cq.sqlCount(ctx)
-	if err != nil {
+	switch _, err := cq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
 		return false, fmt.Errorf("db: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return n > 0, nil
 }
 
 func (cq *ConnectorQuery) querySpec() *sqlgraph.QuerySpec {
@@ -453,7 +454,7 @@ func (cgb *ConnectorGroupBy) Aggregate(fns ...AggregateFunc) *ConnectorGroupBy {
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (cgb *ConnectorGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (cgb *ConnectorGroupBy) Scan(ctx context.Context, v any) error {
 	query, err := cgb.path(ctx)
 	if err != nil {
 		return err
@@ -462,7 +463,7 @@ func (cgb *ConnectorGroupBy) Scan(ctx context.Context, v interface{}) error {
 	return cgb.sqlScan(ctx, v)
 }
 
-func (cgb *ConnectorGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (cgb *ConnectorGroupBy) sqlScan(ctx context.Context, v any) error {
 	for _, f := range cgb.fields {
 		if !connector.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
@@ -509,7 +510,7 @@ type ConnectorSelect struct {
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (cs *ConnectorSelect) Scan(ctx context.Context, v interface{}) error {
+func (cs *ConnectorSelect) Scan(ctx context.Context, v any) error {
 	if err := cs.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -517,7 +518,7 @@ func (cs *ConnectorSelect) Scan(ctx context.Context, v interface{}) error {
 	return cs.sqlScan(ctx, v)
 }
 
-func (cs *ConnectorSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (cs *ConnectorSelect) sqlScan(ctx context.Context, v any) error {
 	rows := &sql.Rows{}
 	query, args := cs.sql.Query()
 	if err := cs.driver.Query(ctx, query, args, rows); err != nil {
