@@ -41,6 +41,7 @@ generate:
 
 build: generate bin/dex
 
+.PHONY: bin/dex
 bin/dex:
 	@mkdir -p bin/
 	@go install -v -ldflags $(LD_FLAGS) $(REPO_PATH)/cmd/dex
@@ -99,8 +100,16 @@ lint: ## Run linter
 fix: ## Fix lint violations
 	golangci-lint run --fix
 
+.PHONE: dump-sk-common
+dump-sk-common:
+	@rm -rf ./dumpzone/skas && mkdir -p ./dumpzone/skas/sk-common
+	@cp -r ../skas/sk-common/pkg ./dumpzone/skas/sk-common/
+	@cp -r ../skas/sk-common/proto ./dumpzone/skas/sk-common/
+	@cp ../skas/sk-common/go.mod ./dumpzone/skas/sk-common/go.mod
+
+
 .PHONY: docker-image
-docker-image:
+docker-image: dump-sk-common
 	$(DOCKER_BUILD) ${DOCKER_PUSH} -t $(DOCKER_IMAGE)  .
 
 .PHONY: verify-proto

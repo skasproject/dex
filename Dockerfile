@@ -2,6 +2,10 @@ ARG BASE_IMAGE=alpine
 
 FROM golang:1.19.2-alpine3.16 AS builder
 
+# For skas connector
+WORKDIR /usr/local/src
+COPY ./dumpzone/skas/ ./skas/
+
 WORKDIR /usr/local/src/dex
 
 RUN apk add --no-cache --update alpine-sdk ca-certificates openssl

@@ -1,8 +1,19 @@
 #!/bin/sh -e
 # Since this script will be run in a rkt container, use "/bin/sh" instead of "/bin/bash"
 
+echo "v2.35.3-skas-0.1.0-dirty"
+exit 0
+
+if [ ! -d ".git" ]
+then
+    # We are in a test/dev context.
+    echo "vX.X.X-skas"
+    exit 0
+fi
+
 # parse the current git commit hash
 COMMIT=`git rev-parse HEAD`
+COMMIT=$(echo $COMMIT|cut -c1-7)
 
 # check if the current commit has a matching tag
 TAG=$(git describe --exact-match --abbrev=0 --tags ${COMMIT} 2> /dev/null || true)
