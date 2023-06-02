@@ -44,7 +44,7 @@ build: generate bin/dex
 .PHONY: bin/dex
 bin/dex:
 	@mkdir -p bin/
-	@go install -v -ldflags $(LD_FLAGS) $(REPO_PATH)/cmd/dex
+	go install -v -ldflags $(LD_FLAGS) $(REPO_PATH)/cmd/dex
 
 examples: bin/grpc-client bin/example-app
 
