@@ -72,7 +72,7 @@ func (sc skasConnector) Login(ctx context.Context, scope connector.Scopes, usern
 		if len(loginResponse.Emails) > 0 {
 			ident.Email = loginResponse.Emails[0]
 		}
-		sc.logger.Infof("connector:%s: login of '%s' successful. => preferredUserName:'%s'  email:'%s'  groups:'%v'", sc.id, username, ident.PreferredUsername, ident.Email, ident.Groups)
+		sc.logger.Infof("connector:%s: login of '%s' successful. => preferredUserName:'%s'  email:'%s'  groups:'%v'", sc.id, ident.Username, ident.PreferredUsername, ident.Email, ident.Groups)
 		return ident, true, nil
 	} else {
 		sc.logger.Infof("connector:%s: login of '%s' failed", sc.id, username)

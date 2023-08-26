@@ -35,9 +35,14 @@ LD_FLAGS="-w -X main.version=$(VERSION)"
 KIND_NODE_IMAGE = "kindest/node:v1.19.11@sha256:07db187ae84b4b7de440a73886f008cf903fcf5764ba8106a9fd5243d6f32729"
 KIND_TMP_DIR = "$(PWD)/bin/test/dex-kind-kubeconfig"
 
+
+.PHONY: docker-image
+docker-image: dump-sk-common
+	$(DOCKER_BUILD) ${DOCKER_PUSH} -t $(DOCKER_IMAGE)  .
+
 .PHONY: generate
 generate:
-	@go generate $(REPO_PATH)/storage/ent/
+	go generate $(REPO_PATH)/storage/ent/
 
 build: generate bin/dex
 
@@ -107,10 +112,6 @@ dump-sk-common:
 	@cp -r ../skas/sk-common/proto ./dumpzone/skas/sk-common/
 	@cp ../skas/sk-common/go.mod ./dumpzone/skas/sk-common/go.mod
 
-
-.PHONY: docker-image
-docker-image: dump-sk-common
-	$(DOCKER_BUILD) ${DOCKER_PUSH} -t $(DOCKER_IMAGE)  .
 
 .PHONY: verify-proto
 verify-proto: proto
